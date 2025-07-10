@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Reserva Confirmada{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <h1 class="text-success fw-bold">Reserva Confirmada!</h1>
+    <p class="fs-5 mt-3">Obrigado por reservar conosco. Sua reserva foi registrada com sucesso.</p>
+    <a href="{% url 'quartos' %}" class="btn btn-primary mt-4">Voltar para Quartos</a>
+</div>
+{% endblock %}

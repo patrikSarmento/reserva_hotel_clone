@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar Reserva{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <h2 class="mb-4">Confirmar Reserva - {{ quarto }}</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+    <div class="mb-3">
+      <label for="dias" class="form-label">Número de Dias</label>
+      <input type="number" class="form-control" id="dias" name="dias" min="1" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Confirmar Reserva</button>
+  </form>
+
+  <a href="{% url 'quartos' %}" class="btn btn-secondary mt-3">Cancelar</a>
+</div>
+{% endblock %}

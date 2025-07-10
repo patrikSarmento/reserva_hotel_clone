@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Quartos Disponíveis{% endblock %}
+
+{% block content %}
+<style>
+  /* Fundo animado */
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  .background-fade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{% static 'clientes/images/hotel_cortez.jpeg' %}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(0.6);
+    z-index: -1;
+    animation: zoomBackground 20s ease-in-out infinite;
+    transition: background-position 0.5s ease;
+  }
+
+  @keyframes zoomBackground {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  /* Cabeçalho personalizado */
+  header.custom-header {
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    padding: 1rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #004080;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  header.custom-header a {
+    color: #2575fc;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  header.custom-header a:hover {
+    text-decoration: underline;
+  }
+
+  .container-quartos {
+    max-width: 800px;
+    margin: 0 auto; /* centraliza horizontalmente */
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+  }
+
+  .card {
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f0f8ff, #dbe9ff);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px 15px 0 0;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .card-title {
+    color: #004080;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-text {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  label.form-label {
+    font-weight: 600;
+    color: #004080;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  input.form-control {
+    border: 2px solid #80b3ff;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    width: 100px;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  input.form-control:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 6px rgba(0,86,179,0.5);
+  }
+
+  .btn-success {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 600;
+    padding: 0.5rem 1.4rem;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .btn-success:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 0.5rem 1.4rem;
+  }
+</style>
+
+<div class="background-fade"></div>
+
+<header class="custom-header">
+  <div>Hotel</div>
+  {% if request.user.is_authenticated %}
+    <div>
+      Olá, {{ request.user.nome }} |
+      <a href="{% url 'logout' %}">Logout</a>
+    </div>
+  {% else %}
+    <div><a href="{% url 'login' %}">Login</a></div>
+  {% endif %}
+</header>
+
+<div class="container container-quartos py-5">
+  <h1 class="mb-4 text-primary fw-bold text-center">Quartos Disponíveis</h1>
+
+  {% if quartos_disponiveis > 0 %}
+    <p class="fs-5 mb-5 text-center">
+      <strong>{{ quartos_disponiveis }}</strong> quartos disponíveis para você!
+    </p>
+
+    <form method="get" class="card">
+      <img src="{% static 'clientes/images/quarto_standard.jpeg' %}" alt="Quarto Standard" />
+      <div class="card-body">
+        <h5 class="card-title">Quarto Standard</h5>
+        <p class="card-text mb-2">Valor: <span class="text-success fw-semibold">R$ 500</span> por diária</p>
+
+        <label for="dias_standard" class="form-label">Escolha a quantidade de dias:</label>
+        <input type="number" id="dias_standard" name="dias" min="1" value="{{ dias|default:1 }}" class="form-control" />
+
+        <p class="card-text">Dias selecionados: <strong>{{ dias|default:1 }}</strong></p>
+        <p class="card-text fw-bold fs-5 text-primary">Total: R$ {{ 500|mul:dias|default:500 }}</p>
+
+        <button type="submit" class="btn btn-success">Verificar Valor</button>
+
+        <a href="{% url 'quarto_standard' %}" class="btn btn-primary mt-2">Ver detalhes</a>
+      </div>
+    </form>
+
+    <form method="get" class="card">
+      <img src="{% static 'clientes/images/quarto_luxo1.jpeg' %}" alt="Quarto Luxo" />
+      <div class="card-body">
+        <h5 class="card-title">Quarto Luxo</h5>
+        <p class="card-text mb-2">Valor: <span class="text-success fw-semibold">R$ 1000</span> por diária</p>
+
+        <label for="dias_luxo" class="form-label">Escolha a quantidade de dias:</label>
+        <input type="number" id="dias_luxo" name="dias" min="1" value="{{ dias|default:1 }}" class="form-control" />
+
+        <p class="card-text">Dias selecionados: <strong>{{ dias|default:1 }}</strong></p>
+        <p class="card-text fw-bold fs-5 text-primary">Total: R$ {{ 1000|mul:dias|default:1000 }}</p>
+
+        <button type="submit" class="btn btn-success">Verificar Valor</button>
+
+        <a href="{% url 'quarto_luxo' %}" class="btn btn-primary mt-2">Ver detalhes</a>
+      </div>
+    </form>
+
+    <form method="get" class="card">
+      <img src="{% static 'clientes/images/suite_presidencial2.jpeg' %}" alt="Suíte Presidencial" />
+      <div class="card-body">
+        <h5 class="card-title">Suíte Presidencial</h5>
+        <p class="card-text mb-2">Valor: <span class="text-success fw-semibold">R$ 2000</span> por diária</p>
+
+        <label for="dias_presidencial" class="form-label">Escolha a quantidade de dias:</label>
+        <input type="number" id="dias_presidencial" name="dias" min="1" value="{{ dias|default:1 }}" class="form-control" />
+
+        <p class="card-text">Dias selecionados: <strong>{{ dias|default:1 }}</strong></p>
+        <p class="card-text fw-bold fs-5 text-primary">Total: R$ {{ 2000|mul:dias|default:2000 }}</p>
+
+        <button type="submit" class="btn btn-success">Verificar Valor</button>
+
+        <a href="{% url 'suite_presidencial' %}" class="btn btn-primary mt-2">Ver detalhes</a>
+      </div>
+    </form>
+
+  {% else %}
+    <div class="alert alert-warning text-center" role="alert">
+      Não há quartos disponíveis no momento.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

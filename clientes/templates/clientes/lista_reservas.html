@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas Reservas{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+    <h2 class="mb-4">Minhas Reservas</h2>
+
+    {% if reservas %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Quarto</th>
+                    <th>Data da Reserva</th>
+                    <th>Dias</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.quarto }}</td>
+                    <td>{{ reserva.data_reserva|date:"d/m/Y H:i" }}</td>
+                    <td>{{ reserva.dias }}</td>
+                    <td>
+                        <a href="{% url 'cancelar_reserva' reserva.id %}" class="btn btn-danger btn-sm">Cancelar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Você não possui reservas ativas.</p>
+    {% endif %}
+</div>
+{% endblock %}

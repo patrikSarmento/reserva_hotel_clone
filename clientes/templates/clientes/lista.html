@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Clientes Cadastrados{% endblock %}
+
+{% block content %}
+    <div class="text-end mb-3">
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
+    </div>
+
+    <h1 class="mb-4 text-center">Painel de Clientes</h1>
+
+    {% if clientes %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>CPF</th>
+                    <th>Data de Cadastro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nome }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.cpf }}</td>
+                        <td>{{ cliente.data_cadastro|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">Nenhum cliente cadastrado.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'cadastro' %}" class="btn btn-secondary">Voltar para Cadastro</a>
+    </div>
+{% endblock %}

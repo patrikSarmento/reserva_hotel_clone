@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quarto.nome }} | Detalhes do Quarto{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 800px;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <img src="{% static 'clientes/images/quarto_standard.jpeg' %}" 
+             alt="{{ quarto.nome }}" 
+             class="card-img-top rounded-top-4" 
+             style="max-height: 400px; object-fit: cover;" />
+
+        <div class="card-body">
+            <h2 class="card-title text-center mb-3">{{ quarto.nome }}</h2>
+
+            <p class="card-text" style="font-size: 1.1rem;">{{ quarto.descricao }}</p>
+
+            <p class="card-text">
+                <span class="fw-bold">Valor por diária:</span>
+                <span class="text-success fs-5">R$ {{ quarto.valor }}</span>
+            </p>
+
+            <!-- Botão que leva à confirmação da reserva -->
+            <a href="{% url 'confirmar_reserva' quarto.nome %}" class="btn btn-success w-100 mt-4">
+                Confirmar Reserva
+            </a>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'quartos' %}" class="btn btn-outline-primary px-4">
+                    ← Voltar para Quartos
+                </a>
+                <a href="{% url 'listar_reservas' %}" class="btn btn-link">
+                    Minhas Reservas
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

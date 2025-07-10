@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quarto.nome }} | Detalhes da Suíte{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 800px;">
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <!-- Carrossel de imagens -->
+        <div id="carouselSuite" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner rounded-top-4">
+                <div class="carousel-item active">
+                    <img src="{% static 'clientes/images/suite_presidencial2.jpeg' %}" 
+                         class="d-block w-100" 
+                         style="max-height: 400px; object-fit: cover;" 
+                         alt="Imagem 1 - Suíte Presidencial">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'clientes/images/suite_presidencial.jpeg' %}" 
+                         class="d-block w-100" 
+                         style="max-height: 400px; object-fit: cover;" 
+                         alt="Imagem 2 - Suíte Presidencial">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselSuite" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselSuite" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <div class="card-body">
+            <h2 class="card-title text-center mb-3">{{ quarto.nome }}</h2>
+            <p class="card-text" style="font-size: 1.1rem;">{{ quarto.descricao }}</p>
+            <p class="card-text">
+                <strong>Valor por diária:</strong> 
+                <span class="text-success fs-5">R$ {{ quarto.valor }}</span>
+            </p>
+
+            <!-- Botão para confirmar reserva -->
+            <a href="{% url 'confirmar_reserva' quarto.nome %}" class="btn btn-success w-100 mt-4">
+                Confirmar Reserva
+            </a>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'quartos' %}" class="btn btn-outline-primary px-4">
+                    ← Voltar para Quartos
+                </a>
+                <a href="{% url 'listar_reservas' %}" class="btn btn-link">
+                    Minhas Reservas
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

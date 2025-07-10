@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar Cancelamento{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <h2>Cancelar Reserva</h2>
+  <p>Tem certeza que deseja cancelar a reserva do quarto <strong>{{ reserva.quarto }}</strong> feita em <strong>{{ reserva.data_reserva }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
+    <a href="{% url 'listar_reservas' %}" class="btn btn-secondary">Voltar</a>
+  </form>
+</div>
+{% endblock %}

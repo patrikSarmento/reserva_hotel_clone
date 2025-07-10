@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro de Cliente{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4 w-100" style="max-width: 500px; margin: auto; border-radius: 20px;">
+    <h1 class="text-center mb-4 text-primary">
+        <i class="bi bi-person-plus-fill me-2"></i>Cadastro de Cliente
+    </h1>
+
+    <p class="text-center text-muted mb-4">
+        <i class="bi bi-door-open"></i> Vagas disponíveis: <strong>{{ vagas_disponiveis }}</strong>
+    </p>
+
+    {% if mensagem_sucesso %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-sucesso">
+            <i class="bi bi-check-circle me-2"></i>{{ mensagem_sucesso }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    {% if mensagens_erro %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-erro">
+            <ul class="mb-0">
+                {% for erro in mensagens_erro %}
+                    <li><i class="bi bi-exclamation-triangle me-2"></i>{{ erro }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nome" class="form-label fw-semibold">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label fw-semibold">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="email@exemplo.com" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="cpf" class="form-label fw-semibold">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="senha" class="form-label fw-semibold">Senha</label>
+            <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite uma senha segura" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-2 shadow-sm">
+            <i class="bi bi-check2-circle me-1"></i> Cadastrar
+        </button>
+        <!-- Link para login -->
+        <div class="text-center mt-4">
+            <p class="text-muted">Já possui uma conta?
+                <a href="{% url 'login' %}" class="text-decoration-none fw-bold text-primary">Clique aqui para entrar</a>.
+            </p>
+        </div>
+    </form>
+</div>
+
+<!-- Script para esconder alertas automaticamente -->
+<script>
+    setTimeout(() => {
+        const alertaSucesso = document.getElementById('alert-sucesso');
+        const alertaErro = document.getElementById('alert-erro');
+        if (alertaSucesso) alertaSucesso.classList.remove('show');
+        if (alertaErro) alertaErro.classList.remove('show');
+    }, 3000);
+</script>
+{% endblock %}
