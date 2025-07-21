@@ -1,19 +1,18 @@
+import os
+import dj_database_url
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Caminho base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# Configurações de segurança e debug via variáveis de ambiente
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')
 
-SECRET_KEY = 'django-insecure-l_je(+ylqs8n%@9v&40&8=0ihsqro+nhol0uuu@(0+821kn(0@'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-DEBUG = True
+ALLOWED_HOSTS = ['*']  # Para produção, substitua pelo domínio real do Render
 
-ALLOWED_HOSTS = []
-
-# Application definition
-
+# Aplicações instaladas
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,6 +24,7 @@ INSTALLED_APPS = [
     'clientes',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -35,8 +35,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Configuração das URLs raiz
 ROOT_URLCONF = 'novo_projeto.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -52,21 +54,15 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'novo_projeto.wsgi.application'
 
-# Database
+# Configuração do banco usando dj_database_url e variável de ambiente DATABASE_URL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '080300Silva@',
-        'HOST': 'db.inytnjtbxeiynxqzcpea.supabase.co',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
-# Password validation
+# Validações de senha
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -82,7 +78,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+# Internacionalização
 LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Sao_Paulo'
@@ -91,22 +87,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Redirects após login/logout
+# Redirecionamentos após login/logout
 LOGIN_REDIRECT_URL = '/clientes/'
 LOGOUT_REDIRECT_URL = '/login/'
 
-# Static files (CSS, JavaScript, Images)
-
-
-# Se tiver uma pasta static na raiz do projeto, inclua aqui
+# Arquivos estáticos
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'clientes' / 'static',
 ]
-# Padrão para arquivos estáticos coletados em produção (use se fizer deploy)
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Descomente quando for para produção e rodar collectstatic
 
-# Default primary key field type
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Para produção e collectstatic
+
+# Configurações adicionais
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 AUTH_USER_MODEL = 'clientes.CustomUser'
